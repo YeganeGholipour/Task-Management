@@ -1,13 +1,13 @@
-from __future__ import absolute_import, unicode_literals
 from celery import shared_task
-from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils import timezone  # Use timezone from Django
+from datetime import timedelta
 from .models import Task
 
 @shared_task
-def list_tasks_due_in_24_hours():
-    now = datetime.now()
+def list_tasks_due_in_24_hours(recipient_list_emails):
+    now = timezone.now() 
     due_in_24_hours = now + timedelta(hours=24)
     tasks = Task.objects.filter(due_date__lte=due_in_24_hours)
     
@@ -19,6 +19,11 @@ def list_tasks_due_in_24_hours():
             subject=subject,
             message=message,
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[task.project.user.email],  
+            recipient_list=recipient_list_emails,  
             fail_silently=False,
         )
+
+
+# @shared_task
+# def add(x, y):
+#     return x + y
