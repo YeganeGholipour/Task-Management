@@ -3,6 +3,10 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from .models import Project, Task, Comment, StatusChoice
 from rest_framework import status
+from datetime import datetime, timedelta
+from django.utils import timezone
+from .tasks import list_tasks_due_in_24_hours
+from django.core import mail
 
 
 class ProjectTest(TestCase):
@@ -184,3 +188,28 @@ class CommentTest(TestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Comment.objects.count(), 0)
+
+
+
+class CeleryTest(TestCase):
+    def setUp(self) -> None:
+        now = timezone.now()
+        self.due = now + timedelta(hours=24)
+        project = Project.objects.create(name='Test Project', description='This is a test project')
+        self.task = Task.objects.create(title='Test Task', description='This is a test task', status='PENDING', due_date=self.due, project=project)
+        self.recipient_list_emails = ["yeganegholiour@gmail.com"]
+    def test_list_tasks_due_in_24_hours(self):
+        mail.outbox = []
+
+        list_tasks_due_in_24_hours.apply(
+            args=[self.recipient_list_emails])
+
+        sent_email = mail.outbox[0]
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, self.recipient_list_emails)
+        self.assertIn('Reminder for task:', sent_email.subject)
+        self.assertIn(self.task.title, sent_email.body)
+        self.assertIn('Due Date:', sent_email.body)
+
+    def tearDown(self):
+        self.task.delete()

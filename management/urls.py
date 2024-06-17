@@ -7,4 +7,6 @@ urlpatterns = [
     path("tasks/", views.TaskView.as_view(), name="tasks"),
     path("tasks/<int:pk>/", views.TaskView.as_view(), name="task"),
     path("tasks/<int:pk>/comments/", views.CommentsView.as_view(), name="comments"),
+
+    # path('add-task/', views.add_view, name='add_task'),
 ]

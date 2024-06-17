@@ -139,3 +139,11 @@ class CommentsView(APIView):
             cache.delete(f'comments_for_task_{task_id}')  
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# from django.http import JsonResponse
+# from .tasks import add
+
+# def add_view(request):
+#     result = add.delay(4, 6)
+#     return JsonResponse({'task_id': result.id})
