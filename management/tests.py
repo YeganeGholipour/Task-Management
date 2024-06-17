@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from .tasks import list_tasks_due_in_24_hours
 from django.core import mail
+from django.core.cache import cache
+import time
 
 
 class ProjectTest(TestCase):
@@ -213,3 +215,25 @@ class CeleryTest(TestCase):
 
     def tearDown(self):
         self.task.delete()
+
+
+class CacheTest(TestCase):
+    def setUp(self):
+        cache.clear()
+    def test_get_and_set(self):
+        cache.set('key', 'value')
+
+        value = cache.get('key')
+        self.assertEqual(value, 'value')
+
+    def test_delete(self):
+        cache.set('key', 'value')
+        cache.delete('key')
+        value = cache.get('key')
+        self.assertIsNone(value)
+
+    def test_cache_timeout(self):
+        cache.set('key', 'value', timeout=1)
+        time.sleep(2)
+        value = cache.get('key')
+        self.assertIsNone(value)
