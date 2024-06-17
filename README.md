@@ -53,18 +53,18 @@ To run this project locally, make sure you have Docker installed on your system.
    ```
 ## EndPoints
 these are the list of endpoints available:
-• GET /projects/ - List all projects.
-• POST /projects/ - Create a new project.
-• GET /projects/<id>/ - Retrieve a single project by ID.
-• PUT /projects/<id>/ - Update a project by ID.
-• DELETE /projects/<id>/ - Delete a project by ID.
-• GET /tasks/ - List all tasks.
-• POST /tasks/ - Create a new task.
-• GET /tasks/<id>/ - Retrieve a single task by ID.
-• PUT /tasks/<id>/ - Update a task by ID.
-• DELETE /tasks/<id>/ - Delete a task by ID.
-• POST /tasks/<id>/comments/ - Add a comment to a task.
-• GET /tasks/<id>/comments/ - List all comments for a task.
+1. GET /projects/ - List all projects.
+2. POST /projects/ - Create a new project.
+3. GET /projects/<id>/ - Retrieve a single project by ID.
+4. PUT /projects/<id>/ - Update a project by ID.
+5. DELETE /projects/<id>/ - Delete a project by ID.
+6. GET /tasks/ - List all tasks.
+7. POST /tasks/ - Create a new task.
+8. GET /tasks/<id>/ - Retrieve a single task by ID.
+9. PUT /tasks/<id>/ - Update a task by ID.
+10. DELETE /tasks/<id>/ - Delete a task by ID.
+11. POST /tasks/<id>/comments/ - Add a comment to a task.
+12. GET /tasks/<id>/comments/ - List all comments for a task.
 
 
 
