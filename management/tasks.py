@@ -24,19 +24,33 @@ def list_tasks_due_in_24_hours(recipient_list_emails):
         )
 
 
+@shared_task
 def send_daily_reports(recipient_list_emails):
     pending_task = Task.objects.filter(status='PENDING').count()
     completed_task = Task.objects.filter(status='COMPLETED').count()
     progress_task = Task.objects.filter(status='IN_PROGRESS').count()
+    
     subject = 'Daily Task Report'
-    message = f'Hello,\n\nHere is your daily task report:\n\nPending Tasks: {pending_task}\nCompleted Tasks: {completed_task}\nIn Progress Tasks: {progress_task}\nThank you!'
-    send_mail(
-        subject=subject,
-        message=message,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=recipient_list_emails,  
-        fail_silently=False,
+    message = (
+        f'Hello,\n\n'
+        f'Here is your daily task report:\n\n'
+        f'Pending Tasks: {pending_task}\n'
+        f'Completed Tasks: {completed_task}\n'
+        f'In Progress Tasks: {progress_task}\n\n'
+        f'Thank you!'
     )
+
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=recipient_list_emails,  
+            fail_silently=False,
+        )
+    except Exception as e:
+        # Handle exceptions or log them as needed
+        print(f"Error sending daily report email: {e}")
 
 # @shared_task
 # def add(x, y):
