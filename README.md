@@ -1,6 +1,6 @@
 # Task Management API Server
 
-### This project is a Task Management API server built with Django and Docker, utilizing PostgreSQL as the database. It allows users to manage projects, tasks within those projects, add comments to tasks, receive daily reports of tasks, and reminders for tasks due within the next 24 hours.
+ This project is a Task Management API server built with Django and Docker, utilizing PostgreSQL as the database. It allows users to manage projects, tasks within those projects, add comments to tasks, receive daily reports of tasks, and reminders for tasks due within the next 24 hours.
 ## Features
 
     1. Projects Management: CRUD operations for projects.
